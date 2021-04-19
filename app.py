@@ -16,6 +16,7 @@ Platform developed by: Biswajit Maharathi
 contact: bmahar2@uic.edu
 
 """
+import flask
 from base64 import b64encode
 from io import StringIO
 from dash_extensions import Download
@@ -50,7 +51,8 @@ image_filename = 'UINeurorepository.jpg'
 encoded_image = b64encode(open(image_filename, 'rb').read())
 
 # associate the bootstrap style sheet for dash
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], title="Postmortem human cortex gene calculator")
+server = flask.Flask(__name__)
+app = dash.Dash(server=server, external_stylesheets=[dbc.themes.BOOTSTRAP], title="Postmortem human cortex gene calculator")
 
 headerimage = dbc.Container(
     [
@@ -340,4 +342,4 @@ def download_as_csv(n_clicks):
 
 
 if __name__ == '__main__':
-    app.run_server(debug=False)
+    app.run_server(threaded=True, debug=False)
