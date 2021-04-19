@@ -16,7 +16,7 @@ Platform developed by: Biswajit Maharathi
 contact: bmahar2@uic.edu
 
 """
-#import flask
+import flask
 from base64 import b64encode
 from io import StringIO
 from dash_extensions import Download
@@ -32,29 +32,13 @@ import pandas as pd
 
 
 # associate the bootstrap style sheet for dash
-app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP], title="Postmortem human cortex gene calculator")
+server = flask.Flask(__name__)
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], title="Postmortem human cortex gene calculator", server=server)
 app.config.suppress_callback_exceptions = True
-server = app.server
-
-
-# read the CSV file for the data
-genedata = pd.read_csv('https://raw.githubusercontent.com/bmaharathi/zombiegene/master/data4.csv')
-
-# format the raw data
-genedata_insert = [
-    (row + 1, gdata[0], gdata[3:].tolist(), gdata[1],gdata[2].split('[')[0])
-    for row, gdata in genedata.iterrows()]
-
-genedata_insert = pd.DataFrame(genedata_insert, columns=['geneid', 'genename', 'genexpression', 'Ensemble', 'Genedescription'])
-genedata_names = genedata_insert[['geneid', 'genename','Genedescription']].copy()
-genedata_names['genenamedesc'] = genedata_names['genename'] + '(' + genedata_names['Genedescription'] + ')'
-genename_selection = [{"label": gName[3], "value": gName[0]} for idx, gName in genedata_names.iterrows()]
-
-xtimevalues = [0, 1, 2, 4, 8, 12, 24]
 
 # read the logo
-image_filename = 'UINeurorepository.jpg'
-encoded_image = b64encode(open(image_filename, 'rb').read())
+#image_filename = 'UINeurorepository.jpg'
+#encoded_image = b64encode(open(image_filename, 'rb').read())
 
 headerimage = dbc.Container(
     [
@@ -72,6 +56,22 @@ introduction = dbc.Jumbotron(
                ),
     ]
 )
+
+
+# read the CSV file for the data
+genedata = pd.read_csv('https://raw.githubusercontent.com/bmaharathi/zombiegene/master/data4.csv')
+
+# format the raw data
+genedata_insert = [
+    (row + 1, gdata[0], gdata[3:].tolist(), gdata[1],gdata[2].split('[')[0])
+    for row, gdata in genedata.iterrows()]
+
+genedata_insert = pd.DataFrame(genedata_insert, columns=['geneid', 'genename', 'genexpression', 'Ensemble', 'Genedescription'])
+genedata_names = genedata_insert[['geneid', 'genename','Genedescription']].copy()
+genedata_names['genenamedesc'] = genedata_names['genename'] + '(' + genedata_names['Genedescription'] + ')'
+genename_selection = [{"label": gName[3], "value": gName[0]} for idx, gName in genedata_names.iterrows()]
+
+xtimevalues = [0, 1, 2, 4, 8, 12, 24]
 
 controls = dbc.Card(
     [
