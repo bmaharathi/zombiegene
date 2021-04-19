@@ -53,6 +53,7 @@ encoded_image = b64encode(open(image_filename, 'rb').read())
 # associate the bootstrap style sheet for dash
 server = flask.Flask(__name__)
 app = dash.Dash(server=server, external_stylesheets=[dbc.themes.BOOTSTRAP], title="Postmortem human cortex gene calculator")
+app.config.suppress_callback_exceptions = True
 
 headerimage = dbc.Container(
     [
