@@ -7,6 +7,8 @@ settings.py
 
 # Distribution / packaging
 .Python
+venv/
+.venv
 env/
 .env
 .idea
@@ -18,6 +20,3 @@ eggs/
 .eggs/
 lib64/
 var/
-
-venv/
-.venv
