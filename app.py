@@ -32,9 +32,9 @@ import pandas as pd
 
 
 # associate the bootstrap style sheet for dash
-server = flask.Flask(__name__)
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], title="Postmortem human cortex gene calculator", server=server)
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], title="Postmortem human cortex gene calculator")
 app.config.suppress_callback_exceptions = True
+server = app.server
 
 # read the logo
 #image_filename = 'UINeurorepository.jpg'
