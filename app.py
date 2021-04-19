@@ -16,7 +16,7 @@ Platform developed by: Biswajit Maharathi
 contact: bmahar2@uic.edu
 
 """
-import flask
+#import flask
 from base64 import b64encode
 from io import StringIO
 from dash_extensions import Download
@@ -28,11 +28,17 @@ import dash_core_components as dcc
 import dash_html_components as html
 import plotly.express as px
 import plotly.figure_factory as ff
-
 import pandas as pd
 
+
+# associate the bootstrap style sheet for dash
+app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP], title="Postmortem human cortex gene calculator")
+app.config.suppress_callback_exceptions = True
+server = app.server
+
+
 # read the CSV file for the data
-genedata = pd.read_csv('data4.csv')
+genedata = pd.read_csv('https://raw.githubusercontent.com/bmaharathi/zombiegene/master/data4.csv')
 
 # format the raw data
 genedata_insert = [
@@ -50,14 +56,9 @@ xtimevalues = [0, 1, 2, 4, 8, 12, 24]
 image_filename = 'UINeurorepository.jpg'
 encoded_image = b64encode(open(image_filename, 'rb').read())
 
-# associate the bootstrap style sheet for dash
-server = flask.Flask(__name__)
-app = dash.Dash(server=server, external_stylesheets=[dbc.themes.BOOTSTRAP], title="Postmortem human cortex gene calculator")
-app.config.suppress_callback_exceptions = True
-
 headerimage = dbc.Container(
     [
-        html.Img(src='data:image/jpg;base64,{}'.format(encoded_image.decode()), alt="UI Neurorepository",
+        html.Img(src='https://raw.githubusercontent.com/bmaharathi/zombiegene/master/UINeurorepository.jpg', alt="UI Neurorepository",
                  style={'height': '80%', 'width': '80%'}),
     ]
 )
